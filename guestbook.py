@@ -25,6 +25,11 @@ class Greeting(ndb.Model):
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
+        template = jinja_environment.get_template('index.html')
+        self.response.out.write(template.render())
+
+class Mainbook(webapp2.RequestHandler):
+    def get(self):
         greetings_query = Greeting.query(ancestor=guestbook_key()).order(-Greeting.date)
         greetings = greetings_query.fetch(10)
 
@@ -35,7 +40,7 @@ class MainPage(webapp2.RequestHandler):
             url = users.create_login_url(self.request.uri)
             url_linktext = 'Login'
 
-        template = jinja_environment.get_template('index.html')
+        template = jinja_environment.get_template('guestbook.html')
         self.response.out.write(template.render(greetings=greetings,
                                                 url=url,
                                                 url_linktext=url_linktext))
@@ -49,9 +54,10 @@ class Guestbook(webapp2.RequestHandler):
 
         greeting.content = self.request.get('content')
         greeting.put()
-        self.redirect('/')
+        self.redirect('/guestbook')
 
 application = webapp2.WSGIApplication([
     ('/', MainPage),
+    ('/guestbook', Mainbook),
     ('/sign', Guestbook),
 ], debug=True)
