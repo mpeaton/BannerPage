@@ -56,8 +56,14 @@ class Guestbook(webapp2.RequestHandler):
         greeting.put()
         self.redirect('/guestbook')
 
+class Bugmap(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_environment.get_template('mapexample.html')
+        self.response.out.write(template.render())
+		
 application = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/guestbook', Mainbook),
     ('/sign', Guestbook),
+    ('/bugmap',Bugmap),
 ], debug=True)
