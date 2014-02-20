@@ -5,13 +5,16 @@ api_version: 1
 threadsafe: true
 
 handlers:
-- url: /favicon\.ico
-  static_files: favicon.ico
-  upload: favicon\.ico
 
+- url: /bootstrap
+  static_dir: bootstrap
+
+- url: /resources
+  static_dir: resources
 
 - url: /.*
-  script: bannerpage.application
+  script: guestbook.application
+
 
 libraries:
 - name: webapp2
