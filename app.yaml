@@ -13,7 +13,7 @@ handlers:
   static_dir: resources
 
 - url: /.*
-  script: guestbook.application
+  script: bannerpage.application
 
 
 libraries:
