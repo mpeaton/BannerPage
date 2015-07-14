@@ -1,6 +1,7 @@
 import jinja2
 import os
 import webapp2
+import time	
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
@@ -21,7 +22,14 @@ class MainPage(webapp2.RequestHandler):
     def get(self):
         template = jinja_environment.get_template('index.html')
         self.response.out.write(template.render())
-	
+	self.redirect('http://www.amdgtechnologies.info')	
+    
+    def getInfo(self):
+	time.sleep(3)
+
 application = webapp2.WSGIApplication([
     ('/', MainPage),
 ], debug=True)
+
+
+#application.getInfo()
