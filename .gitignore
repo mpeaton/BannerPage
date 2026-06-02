@@ -1,0 +1,36 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE / editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Dependencies
+node_modules/
+
+# Build / temp (if any)
+dist/
+build/
+*.tmp
+
+# Amplify (local CLI state, not needed for hosting)
+.amplify/
+amplify/
+
+# Old / legacy
+*.bak
+wpress.bak.sql
+
+# Design history (large, keep in repo only if wanted; currently untracked in this state)
+# html/resources/logos/  # uncomment if you want to ignore the full history folder
+
+# Environment
+.env
+.env.local
