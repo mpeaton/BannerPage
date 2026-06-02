@@ -1,0 +1,17 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - echo "No build step required - this is a pure static site"
+    build:
+      commands:
+        - echo "Static assets ready for deployment"
+  artifacts:
+    baseDirectory: html
+    files:
+      - '**/*'
+  cache:
+    paths: []
+# Note: For the animation video and poster, Amplify will serve them with good caching by default.
+# If you need longer cache for assets, you can configure in Amplify console under Rewrites and redirects or use headers if using a build.
