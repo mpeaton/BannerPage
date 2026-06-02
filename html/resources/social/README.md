@@ -45,7 +45,7 @@ These are the recommended static thumbnails and marks extracted from the **final
 - For LinkedIn video posts: Attach the MP4 from `html/resources/amdg-animation-final.mp4` (now includes sound). The 1280x720 PNG makes an excellent preview image.
 - If you need different crops, sizes, or light versions, provide details and we can generate more.
 - Source for square: cropped/resampled from animation frame resources/Untitled 5.jpg (high quality render of the final 2x2 four quadrants).
-- Banner: custom black/gray tech background (gradient + grid) with the square logo on the right + text on left-center.
+- Banner: custom black/gray tech background (gradient + grid). No square logo graphic on the banner (to avoid redundancy with LinkedIn's automatic overlay of your profile square logo on the left). Text branding positioned in the visible area (after the profile overlap zone).
 - Other masters in `../logos/`.
 
 Generated/selected on launch of https://www.amdgtechnologies.com/
