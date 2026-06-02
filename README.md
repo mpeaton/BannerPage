@@ -27,6 +27,8 @@ When you reach the "Build settings" screen while creating the app from the GitHu
 
 Amplify should auto-detect the `amplify.yml` we committed. If it offers "Override build settings", use the values above.
 
+You can also paste the *entire content* of the `amplify.yml` file into the full YAML build spec editor on that screen (look for an "Edit" link or YAML view). This is a perfectly valid and explicit option if you prefer to paste the whole thing.
+
 No complex build command is needed — this is a pure static site. The `amplify.yml` handles everything.
 
 ## Key Files

@@ -25,5 +25,9 @@ frontend:
 # Amplify should auto-detect this amplify.yml when connecting the GitHub repo.
 # If it shows "Override build settings", use the values above.
 #
+# You can also paste the *entire content* of this amplify.yml file into the
+# full YAML build spec editor on that screen if you prefer (click "Edit" or
+# the YAML view). This is a valid and explicit approach.
+#
 # Note: For the animation video and poster, Amplify will serve them with good caching by default.
 # If you need longer cache for assets, you can configure in Amplify console under Rewrites and redirects.

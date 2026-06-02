@@ -162,9 +162,10 @@ See the older sections below if you ever want to switch.
        (or leave the field blank — the amplify.yml takes precedence)
      - **Build output directory**: `html`
    - Accept the detected values or override to exactly match above.
+   - If you see a full YAML editor / "Edit" link for the build spec (common on this screen), you **can paste the entire content of your local `amplify.yml` file** there. That's perfectly valid and explicit. Just copy the whole file and paste it in.
    - Save and deploy. First build usually takes 1-3 minutes.
 
-   **Key point**: This site is 100% static (no package.json, no build tools). The only thing Amplify needs to know is "serve everything from the `html/` folder". The `amplify.yml` we added makes this explicit and future-proof.
+   **Key point**: This site is 100% static (no package.json, no build tools). The only thing Amplify needs to know is "serve everything from the `html/` folder". The `amplify.yml` we added makes this explicit and future-proof. Pasting the full YML is one of the cleanest ways if the simple two fields feel limited.
 
 4. **Add custom domain**
    - In the app dashboard: Domain management (left sidebar) → Add domain.
