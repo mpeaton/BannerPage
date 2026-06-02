@@ -37,7 +37,12 @@ No complex build command is needed — this is a pure static site. The `amplify.
 - `DEPLOYMENT.md` — hosting instructions
 - `linkedin-post-draft.md` — suggested announcement post
 - `html/resources/logos/` — all historical logo explorations + the approved final assets + review frames
-- `html/resources/social/` — curated thumbnails for LinkedIn/company page (square mark for profile pic, full frame + optimized banner/post sizes from the approved design)
+- `html/resources/social/` — curated assets for LinkedIn/company page:
+  - `logo-mark-square-1024.png`: square 2x2 mark (cropped/resampled from animation frame Untitled 5.jpg, with circle in D)
+  - `logo-banner-linkedin-1584x396.jpg`: tech background banner with logo on right (correct aspect, no stretch/overlap)
+  - `logo-full-frame-1280x720.png`: full composition frame for posts/video thumbs
+  - `logo-post-linkedin-1200x627.jpg`: post size
+  - See social/README.md for details and recommendations.
 
 ## Quick Local Preview
 From the project root:
