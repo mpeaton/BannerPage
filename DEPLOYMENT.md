@@ -137,22 +137,73 @@ This should get your custom domain live with HTTPS.
   - Use GoDaddy's domain forwarding (forward the root to www) as a simple temporary/permanent solution.
 - In Amplify, after the domain is verified, go to Domain management → your domain → Edit and add a 301 redirect rule from the apex to www for a clean experience.
 
-### After Adding Records in GoDaddy
+### After Adding Records in GoDaddy (You're Here — Waiting for Propagation)
 
-- Wait for propagation (use https://www.whatsmydns.net/ to check).
-- Back in Amplify Domain management, the status should change to "Available".
-- Amplify will automatically provision a free SSL certificate (can take 5-60 minutes; watch the status).
-- Once "Issued", your site will be live on https://www.amdgtechnologies.com (and the apex if you set it up).
+You're in the waiting phase — perfect, the hard part (adding records correctly without breaking email) is done.
 
-### Test After Custom Domain + SSL
+**How to monitor propagation:**
 
-- Visit https://www.amdgtechnologies.com and https://amdgtechnologies.com
-- Run the full test checklist (animation plays correctly with red EKG / green PCB electricity, no console errors, links work, responsive).
-- Send/receive test emails to both addresses to confirm Google Workspace is 100% intact.
+- Primary tool: https://www.whatsmydns.net/
+  - Check **both** `amdgtechnologies.com` and `www.amdgtechnologies.com`
+  - Look for the records to start resolving to Amplify/CloudFront values (you'll see something like a CloudFront domain or the Amplify target instead of GoDaddy parking).
 
-**Safety net**: If anything goes wrong, remove the custom domain in Amplify (it immediately falls back to the Amplifyapp.com URL). Your email will continue working because you never touched the MX records.
+- Command-line checks (run these every 10-15 min):
+  ```bash
+  dig +short www.amdgtechnologies.com
+  dig +short amdgtechnologies.com
+  dig amdgtechnologies.com
+  ```
+  - Eventually you should see the Amplify target in the output.
 
-If Amplify is forcing the hosted zone or the options aren't clear, copy-paste the exact text/options you see on the screen here and I'll give you the precise clicks.
+- Propagation time: Usually 5-30 minutes, but can take a few hours depending on TTLs and DNS caches. Be patient and keep checking.
+
+**Once propagation succeeds (whatsmydns shows the new Amplify targets for both domains):**
+
+1. Go back to the Amplify Console → your app → **Domain management**.
+2. The status for `amdgtechnologies.com` (and www) should update from "Pending verification" or similar to **"Available"**.
+3. Amplify will **automatically** start provisioning the free SSL certificate (since you're using Amplify managed certificate).
+   - This step can take 5-60+ minutes.
+   - Watch the status — it will go through "Pending validation" → "Issued".
+   - No action needed from you — validation uses the DNS records you added.
+
+**Test when fully live (status = "Issued" + green/available + HTTPS works):**
+
+1. Visit in browser (incognito recommended):
+   - https://www.amdgtechnologies.com
+   - https://amdgtechnologies.com (if apex is configured or forwarding is set)
+
+2. Full production test checklist:
+   - Dark modern theme + hero video background loads and plays your final approved animation.
+   - Animation details visible: A with pulsing semantic network, M with **red** EKG trace, D with compass, G with **green** electricity animating along the PCB traces.
+   - Video loops smoothly, is muted, performs well.
+   - "Explore the Mark" link scrolls to the logo meaning sections (A/M/D/G explanations).
+   - Bottom links work (LinkedIn, Facebook).
+   - No errors in browser console (F12 → Console tab) — especially no 404s on the .mp4 or poster .png.
+   - Responsive on mobile (try phone or resize browser; video should adapt, text readable).
+   - The ~1.5 MB video loads at a reasonable speed over your connection.
+
+3. **Critical email verification** (do this every time DNS changes):
+   - Send test emails **to** both `info@amdgtechnologies.com` and `mpeaton@amdgtechnologies.com`.
+   - Send emails **from** them as well.
+   - Confirm full round-trip works and no delivery issues.
+   - If email breaks: Immediately check GoDaddy DNS — you may have accidentally edited an MX record. Revert if needed. The site will still work via the Amplify URL.
+
+**Safety net at this stage:**
+
+- If anything looks broken after propagation/SSL, you can temporarily remove the custom domain in Amplify (Domain management → remove). The site instantly reverts to your safe `*.amplifyapp.com` URL.
+- Email should remain unaffected because you only *added* records in GoDaddy (never changed nameservers or deleted MX records).
+
+**Once everything passes:**
+
+- Update `linkedin-post-draft.md` with the live custom domain URL(s).
+- Post the announcement (attach the final video + poster for maximum impact).
+- Future updates to the site: just `git push origin master` — Amplify will automatically build and deploy (using your `amplify.yml`).
+
+The animation and full site should now be publicly live on your custom domain(s) with proper HTTPS and the beautiful blocks animation as the hero.
+
+**Next for you right now:** Keep an eye on https://www.whatsmydns.net/ and the Amplify Domain management status. When the records propagate and status goes "Available", the SSL provisioning will start automatically. Let me know the results from whatsmydns/dig or when the Amplify status changes, and I'll guide you on the exact next verification steps or tests.
+
+If you want, I can also help prepare a simple "site is live" announcement post or update any other assets. Just say the word.
 
 ### Updating the Live Site
 - With Git connected: Just push changes. Amplify will redeploy.
