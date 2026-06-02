@@ -88,6 +88,7 @@ Amplify will then show the exact records you need to add (usually 1-2 verificati
 
 1. Go to DNS management for the domain.
 2. Add **only** the new records Amplify listed. Copy type, name, and value exactly.
+   - For the long ACM validation CNAMEs (the ones with `_b1ae...` or `_acme-challenge` in the name): in GoDaddy's "Host" field, enter *only* the prefix shown (e.g. `_b1aec88806a78c3afae3d69f6cb3b937.www` ), **stopping before `.amdgtechnologies.com`**. Pasting the full hostname into the Host field is a very common mistake that creates the record at the wrong (doubled) name, so Amplify never sees it.
 3. **Do not delete or change** any existing records — particularly the MX records (and SPF/DKIM) that power your email.
 4. Save.
 
