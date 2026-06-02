@@ -34,3 +34,26 @@ wpress.bak.sql
 # Environment
 .env
 .env.local
+
+# Old deployment configs (not needed for AWS Amplify)
+netlify.toml
+vercel.json
+
+# Historical design explorations (large folder, can be kept separate or ignored for deploy)
+# If you want them in the repo for reference, leave untracked or move to a docs/ folder.
+html/resources/logos/
+html/resources/simple-*/ 
+html/resources/review-frames-*/ 
+html/resources/source-frames/
+html/resources/animation-review-frames/
+html/resources/latest-review-frames/
+html/resources/reference-frames-*/
+
+# Legacy Python/GAE files (from previous setup)
+wsgi.py
+bannerpage.py
+app.yaml
+nginx/
+Dockerfile
+*.sql
+*.bak
