@@ -167,43 +167,84 @@ See the older sections below if you ever want to switch.
 
    **Key point**: This site is 100% static (no package.json, no build tools). The only thing Amplify needs to know is "serve everything from the `html/` folder". The `amplify.yml` we added makes this explicit and future-proof. Pasting the full YML is one of the cleanest ways if the simple two fields feel limited.
 
-4. **Add custom domain**
-   - In the app dashboard: Domain management (left sidebar) → Add domain.
-   - Type `amdgtechnologies.com` and continue.
-   - Amplify will:
-     - Ask you to add verification CNAME records at GoDaddy (usually 1-2 records like `_xxxx.amdgtechnologies.com`).
-     - Once verified, show the records for `www` (CNAME to your Amplify domain) and possibly apex.
-   - Go to your GoDaddy DNS manager and add **exactly** those records (do not touch the existing MX records for Google Workspace).
+## Testing Your Amplify Deployment (Right Now)
 
-5. **Wait for propagation + SSL**
-   - Amplify will issue a free SSL certificate (can take 5-30 mins).
-   - You can choose the default domain (www or non-www) in the domain settings.
+Since your app is already pushed and set up in Amplify:
 
-6. **(Optional but recommended) Add redirect for apex → www**
-   - In Amplify: Domain management → your domain → Edit → Add redirect rule:
-     - Source: `https://amdgtechnologies.com`
-     - Target: `https://www.amdgtechnologies.com`
-     - Type: 301 (permanent)
+1. **Find your current Amplify URL**:
+   - Go to the AWS Amplify Console > your app.
+   - On the overview page, look for the "Hosting" section or the branch (usually "main" or "master").
+   - Click the link — it will be something like `https://main.<random-id>.amplifyapp.com` or `https://<branch>.d<id>.amplifyapp.com`.
+   - Open in incognito to bypass cache.
 
-7. **Test**
-   - Visit https://www.amdgtechnologies.com
-   - Verify the animation plays, links work.
-   - Send/receive test emails to confirm Google Workspace is untouched.
+2. **Run these tests**:
+   - Dark modern theme loads.
+   - Hero video plays the approved animation (red EKG on M, green electricity following PCB traces on G, etc.).
+   - Video loops, muted, background covers properly.
+   - "Explore the Mark" scrolls to the logo section.
+   - Links to LinkedIn/Facebook work.
+   - Browser console (F12) has no 404 errors for the .mp4 or .png.
+   - Mobile/responsive test (video still works, readable).
+   - Video loads at reasonable speed (~1.5 MB file).
 
-**Tip:** You can also connect a custom domain later. The Amplify-provided URL (e.g. main.dxxxx.amplifyapp.com) is always available for testing.
+3. **Check build**:
+   - In Amplify app > "Builds" or "Hosting" tab, confirm the latest push has a green success.
+   - If red, click the build to see logs.
 
-## Files Ready for Amplify
-- `amplify.yml` (root) — configuration for static hosting.
-- `html/` folder — everything Amplify needs to publish (index.html + resources/ with final MP4 and PNG poster).
-- The video and poster are already optimized in size for web delivery.
+4. **Pre-DNS email test**:
+   - Send/receive tests to `info@amdgtechnologies.com` and `mpeaton@amdgtechnologies.com` to confirm Google Workspace still works.
 
-## Next Steps
-1. Push the code to a Git repository (GitHub recommended).
-2. Go to AWS Amplify Console and connect the repo (or use manual deploy for testing).
-3. Add your custom domain `amdgtechnologies.com` in Amplify.
-4. Add the DNS records Amplify provides to your GoDaddy DNS settings.
-5. Once live, update the LinkedIn post draft and announce.
+**Tip:** Keep using this Amplify URL for testing until the custom domain is fully live and SSL issued.
 
-The site is ready. The animation (with red EKG on M and green electricity on G) will be served efficiently.
+## Updating GoDaddy DNS (Pointing amdgtechnologies.com)
 
-If you run into any specific step (e.g. exact DNS records from Amplify, or issues with apex domain), paste the details here and I'll help troubleshoot immediately.
+**Only do this after the Amplify URL tests above pass cleanly.**
+
+1. In Amplify Console:
+   - Open your app.
+   - Left menu: **Domain management** → **Add domain**.
+   - Enter `amdgtechnologies.com` → Continue.
+
+2. Amplify will show steps:
+   - **Verification records** (usually 1-2 CNAMEs like `_acme-challenge....`).
+   - **Routing records** (CNAME for `www`, A records for the apex `@`).
+
+3. Go to GoDaddy:
+   - Domain → Manage DNS.
+   - Add **exactly** the records Amplify listed.
+   - **Do NOT delete or change** any existing MX, SPF, DKIM, DMARC, or other Google Workspace records.
+
+4. Wait for DNS propagation (5 min – few hours):
+   - Check with https://www.whatsmydns.net/ for both `amdgtechnologies.com` and `www.amdgtechnologies.com`.
+   - Or `dig amdgtechnologies.com` and `dig www.amdgtechnologies.com`.
+
+5. Back in Amplify:
+   - Status should update to "Available".
+   - Amplify auto-provisions free SSL (can take 5-60+ minutes). Watch the status.
+
+6. (Strongly recommended) Set up apex redirect:
+   - In Domain management for your domain → Edit.
+   - Add redirect:
+     - Source: `https://amdgtechnologies.com/*`
+     - Target: `https://www.amdgtechnologies.com/:splat`
+     - Type: 301
+
+7. Final custom-domain tests:
+   - Visit both https://www.amdgtechnologies.com and https://amdgtechnologies.com.
+   - Run the full test checklist from the Testing section.
+   - Re-confirm email still works perfectly.
+
+**Safety net**: If DNS gets messed up, just remove the custom domain in Amplify (it reverts to the Amplify URL). Your email MX records are untouched as long as you only *added* records in GoDaddy.
+
+## Quick Reference - What to Do Next
+
+- Test the current Amplify URL immediately (see "Testing Your Amplify Deployment" above).
+- Once happy, go to Domain management in Amplify → Add domain.
+- Add the exact records Amplify gives you in GoDaddy DNS (preserve all Google email records).
+- Wait for propagation + SSL.
+- Update your LinkedIn post draft with the new live URL and announce.
+- Future changes: just `git push` — Amplify will auto-deploy.
+
+The animation and site should now be live on your custom domain with proper HTTPS.
+
+If you hit any error (e.g. paste the exact DNS records Amplify shows you, or a build error, or propagation issue), share the details and I'll give the precise fix.
