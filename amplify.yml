@@ -13,5 +13,11 @@ frontend:
       - '**/*'
   cache:
     paths: []
+# This file tells AWS Amplify:
+# - There is no npm/webpack/etc build needed (pure static HTML + CSS + video).
+# - The site files live in the `html/` directory (index.html + resources/).
+# In the Amplify console "Build settings":
+#   - Frontend build command: (can be left as the echo above, or blank)
+#   - Build output directory: html
 # Note: For the animation video and poster, Amplify will serve them with good caching by default.
-# If you need longer cache for assets, you can configure in Amplify console under Rewrites and redirects or use headers if using a build.
+# If you need longer cache for assets, you can configure in Amplify console under Rewrites and redirects.

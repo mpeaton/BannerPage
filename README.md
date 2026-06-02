@@ -16,9 +16,16 @@ This is the source for the AMDG Technologies website.
 
 - GitHub repo: https://github.com/mpeaton/BannerPage (branch: master)
 - The repo is prepared (amplify.yml, site updates, docs committed).
-- Configuration: `amplify.yml`
+- Configuration: `amplify.yml` (tells Amplify this is static and output dir is `html/`)
 - Full deployment guide: `DEPLOYMENT.md` (includes exact Amplify steps for this repo, DNS notes for GoDaddy + Google Workspace email preservation)
 - Domain: amdgtechnologies.com (managed at GoDaddy for email compatibility)
+
+### Amplify Console Build Settings
+When connecting the repo or editing build settings:
+- **Frontend build command**: `echo "Static assets ready for deployment"` (or leave blank)
+- **Build output directory**: `html`
+
+No complex build command is needed — this is a pure static site. The `amplify.yml` handles everything.
 
 ## Key Files
 - `html/index.html` + `html/resources/` — the live site

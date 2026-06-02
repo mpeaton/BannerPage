@@ -156,10 +156,14 @@ See the older sections below if you ever want to switch.
    - Amplify should auto-detect the `amplify.yml` file.
 
 3. **Review build settings**
-   - It should show:
-     - Build command: (empty or echo)
-     - Publish directory: `html`
+   - Because we committed `amplify.yml` in the repo, Amplify should auto-detect it and pre-fill:
+     - **Frontend build command**: `echo "Static assets ready for deployment"`  
+       (or you can leave this field blank — the `amplify.yml` takes precedence for static sites)
+     - **Build output directory**: `html`
+   - If the fields are editable / you see an "Override build settings" option, set them exactly as above.
    - Save and deploy. First build usually takes 1-3 minutes.
+
+   **Key point**: This site is 100% static (no package.json, no build tools). The only thing Amplify needs to know is "serve everything from the `html/` folder". The `amplify.yml` we added makes this explicit and future-proof.
 
 4. **Add custom domain**
    - In the app dashboard: Domain management (left sidebar) → Add domain.
