@@ -99,6 +99,34 @@ Choosing it will:
 
 Amplify will detect the records once they propagate and issue the SSL certificate.
 
+**On the screen you are currently on (subdomain mapping + SSL choice):**
+
+This is the configuration screen for mapping your subdomains (like www) to specific branches of your app, and choosing how to handle the SSL certificate.
+
+- The subdomain mappings look good (pointing to the "master" branch, which has your latest code).
+- The "Exclude root" is for not including the apex in that particular mapping if desired.
+- There is a checkbox for setting up a redirect (likely for the apex domain to www.amdgtechnologies.com or vice versa) – enable it if you want the naked domain to redirect to www.
+
+**For the SSL certificate question:**
+
+**Yes, let Amplify manage your SSL certificate.** 
+
+Change the radio button selection from "Custom SSL certificate" to **"Amplify managed certificate"** (the top one).
+
+- This is the recommended and simplest option.
+- Amplify will automatically create and manage a free SSL certificate for you in AWS Certificate Manager (ACM), including validation (using the DNS records you will add) and automatic renewal.
+- The "Custom SSL certificate" option is for advanced users who want to import or use their own existing certificate from ACM. Since none are found, it would require you to create one manually first, which is unnecessary here.
+
+After selecting Amplify managed, complete any other config (the subdomain fields), then click the **"Add domain"** button at the bottom right.
+
+After clicking "Add domain", Amplify will display the specific DNS records (these will be CNAME records) that you must add in your GoDaddy DNS manager.
+
+Go add exactly those in GoDaddy (as CNAME record type), without changing nameservers or touching your email MX records.
+
+Then return to Amplify to verify.
+
+This should get your custom domain live with HTTPS.
+
 ### Recommended DNS Strategy (Stay with GoDaddy for now)
 
 - Keep your nameservers at GoDaddy (this protects email).
