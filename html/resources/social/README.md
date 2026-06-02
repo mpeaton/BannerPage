@@ -22,10 +22,9 @@ These are the recommended static thumbnails and marks extracted from the **final
 
 - **Cover / Banner Photo** (wide): `logo-banner-linkedin-1584x396.jpg` (1584x396)
   - Exact recommended LinkedIn cover size (4:1 aspect ratio, 1584x396).
-  - Black/gray tech-inspired background (dark gradient with subtle grid lines for high-tech feel, matching the logo's dark aesthetic).
-  - The square 2x2 logo mark (four quadrants) is placed on the right side (with ample space on the left ~400px for the profile picture to overlap without occluding the logo design in the 'view as member' layout).
-  - Includes the company name "AMDG Technologies, Inc." and tagline in elegant light gray text on the left-center for branding.
-  - This prevents stretching and logo overlap issues. Use this for the cover photo.
+  - Black/gray tech-inspired background (dark gradient with subtle grid lines for high-tech feel, matching the logo's dark aesthetic). No logo mark graphic on the banner to avoid redundancy (LinkedIn already overlays your square profile logo on the left).
+  - Includes the company name "AMDG Technologies, Inc." and tagline in elegant light gray text, positioned starting after the profile overlap zone (left-center) for clean branding when viewed as member.
+  - This prevents stretching and duplicate logo issues. Use this for the cover photo.
 
 ### For Posts, Video Attachments, Shares
 - **Video Thumbnail / Post Image** (landscape from animation): `logo-full-frame-1280x720.png` (1280x720)
