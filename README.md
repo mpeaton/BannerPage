@@ -21,15 +21,15 @@ This is the source for the AMDG Technologies website.
 - Domain: amdgtechnologies.com (managed at GoDaddy for email compatibility)
 
 ### Amplify Console Build Settings
-When you reach the "Build settings" screen while creating the app from the GitHub repo:
+On the "Build settings" screen (during app creation from the connected repository, or via override):
 - **Frontend build command**: `echo "Static assets ready for deployment"` (or leave blank)
 - **Build output directory**: `html`
 
-Amplify should auto-detect the `amplify.yml` we committed. If it offers "Override build settings", use the values above.
+Amplify typically auto-detects the committed `amplify.yml`. Use "Override build settings" to match the values above if needed.
 
-You can also paste the *entire content* of the `amplify.yml` file into the full YAML build spec editor on that screen (look for an "Edit" link or YAML view). This is a perfectly valid and explicit option if you prefer to paste the whole thing.
+The full contents of `amplify.yml` can also be pasted into the YAML build spec editor on that screen (via "Edit" link or equivalent YAML view) for an explicit configuration. This is a valid approach.
 
-No complex build command is needed — this is a pure static site. The `amplify.yml` handles everything.
+No package install or complex build step is required — the site is purely static. The `amplify.yml` declares the output location.
 
 ## Key Files
 - `html/index.html` + `html/resources/` — the live site

@@ -28,20 +28,20 @@ What do you think?
 **Visuals to attach:**
 - Primary: the animation video (amdg-logo-animation-final.mp4) — LinkedIn loves native video
 - Secondary / thumbnail: amdg-logo-animation-final-poster.png (clean 1280x720 frame)
-- Optional: the horizontal logo mark if you have a clean static export
+- Optional: the horizontal logo mark (static export)
 
 **Posting tips:**
-- Post as a native video (not link) for maximum reach.
-- Add a short caption in the first 2-3 lines if you want to edit the above.
-- Tag the company page if you have one.
-- Consider cross-posting a still version to personal profile with the poster image + link to the new website.
+- Publish as native video (not a link post) for best reach.
+- Edit the caption text above as needed; keep key points in the first 2–3 lines.
+- Tag the company page when applicable.
+- For personal profile reach, consider a companion still-image post that links to the live site.
 
-**Website to link to:**
-The updated site is ready at `html/index.html` (uses the final animation as hero). Deploy it (static hosting works great, or the existing app.yaml / GAE setup in the repo) and use the live URL. For now you can test locally with any simple server (e.g. `python -m http.server` from the html/ folder).
+**Website reference:**
+After deployment, link to the live custom domain (e.g. https://www.amdgtechnologies.com). The site sources are in `html/index.html` (hero uses the final animation). For local testing prior to deploy: from the `html/` directory run `python -m http.server` and open http://localhost:8000.
 
 ---
 
-**Alternative shorter version (if you prefer punchier):**
+**Alternative shorter version:**
 
 After years with my original hand-drawn logo, the new AMDG Technologies mark is finally ready.
 
@@ -59,4 +59,4 @@ What do you think of the direction?
 
 ---
 
-Let me know if you want variations (more technical, more faith-oriented, shorter, etc.).
+(Provide variations of this draft — more technical tone, faith-oriented emphasis, shorter length, etc. — on request.)

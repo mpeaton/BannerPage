@@ -8,358 +8,322 @@
 
 **No server-side code is required.** Any static hosting solution will work perfectly.
 
-## Recommended Hosting Options (ranked for your situation)
+## Recommended Hosting: AWS Amplify (Static Hosting)
 
-**You have chosen AWS Amplify** because you want to stay in the AWS ecosystem for future apps and services. This is a great choice.
+This project is configured for AWS Amplify. This choice keeps everything in the AWS ecosystem for future apps, services, or expansions.
 
-### Primary Recommendation: AWS Amplify (Static Hosting)
+### Why AWS Amplify
+- Integrates with existing AWS accounts.
+- Simple managed experience for static sites (comparable to Netlify/Vercel).
+- Automatic global CDN via CloudFront.
+- Generous free tier suitable for this site, with headroom for growth.
+- Built-in CI/CD when connected to a Git repository.
+- Straightforward custom domain support with free managed SSL certificates (via ACM).
+- Path to add backend capabilities (API, auth, database, functions) later within the same project.
+- `amplify.yml` is committed in the project root to declare the static nature and output directory.
 
-**Why this is perfect for you:**
-- Stays 100% in your existing AWS account.
-- Extremely easy for static sites (very similar to Netlify/Vercel in experience).
-- Automatic global CDN via CloudFront under the hood.
-- Free tier is generous (plenty for this site + room to grow into full-stack later).
-- Built-in CI/CD if you connect a Git repo.
-- Easy custom domain + free managed SSL certificate.
-- When you're ready to add backend (API, auth, database, Lambda, etc.), it's seamless in the same Amplify project.
-- `amplify.yml` is already prepared in the root of this project.
-
-**amplify.yml** (already created):
-It tells Amplify that this is a pure static site and the publish directory is `html/` (where `index.html` and `resources/` live).
+**amplify.yml** (committed in root):
+Declares a pure static site with publish directory `html/` (containing `index.html` and `resources/`).
 
 ### Detailed Steps to Deploy with AWS Amplify
 
 #### Option 1: Connect Git Repository (Recommended for ongoing development)
-This project is **already on GitHub**: `git@github.com:mpeaton/BannerPage.git` (branch: `master`).
+This project is on GitHub at the configured remote (branch: `master`).
 
-The repo has been prepared with:
+The repository is prepared with:
 - `amplify.yml`
-- Updated site in `html/`
+- Site content in `html/`
 - `DEPLOYMENT.md`, top-level `README.md`, etc.
-- `.gitignore`
+- `.gitignore` (excludes design history, legacy configs, etc. to keep deploys clean)
 
-1. Make sure your local changes (including the new deployment files we added) are committed and pushed:
+1. Ensure changes are committed and pushed:
    ```bash
    git add .
    git commit -m "Prepare for AWS Amplify + update site with final animation"
    git push origin master
    ```
-   (We have already committed the key files locally in this session: amplify.yml, DEPLOYMENT.md, top-level README, .gitignore enhancements, updated index.html, and the final assets.)
 
-   The .gitignore now excludes historical design folders (logos/ etc.), old Netlify/Vercel configs, .DS_Store, legacy Python files, etc., keeping the repo clean for Amplify.
-
-2. Go to the AWS Amplify Console: https://console.aws.amazon.com/amplify/
-3. Click "New app" → "Host web app".
-4. Connect your Git provider (GitHub) and select the repository `mpeaton/BannerPage` and branch `master`.
-5. Amplify will detect the `amplify.yml` (we prepared it) and should auto-configure:
-   - Build settings: Use the provided `amplify.yml`
+2. In the AWS Amplify Console (https://console.aws.amazon.com/amplify/):
+   - Click "New app" → "Host web app".
+   - Connect the Git provider and select the repository and `master` branch.
+3. Amplify detects `amplify.yml` and auto-configures:
+   - Build settings from the file.
    - Publish directory: `html`
-6. Review and click "Save and deploy". It will build and deploy automatically.
-7. Once deployed, you'll get a URL like `https://main.xxxxx.amplifyapp.com`.
+4. Review and click "Save and deploy". The first build deploys automatically.
+5. After deploy, note the generated Amplify URL (e.g. `https://main.xxxxx.amplifyapp.com`).
 
-**Note:** If Amplify doesn't auto-detect the publish dir, manually set it to `html` in the app settings after creation.
+**Note:** If the publish directory is not detected, set it manually to `html` in the app settings.
 
-#### Option 2: Manual Deploy (Drag & Drop / ZIP - Good for quick start)
+#### Option 2: Manual Deploy (Drag & Drop / ZIP)
 1. In Amplify Console: New app → Deploy without Git.
-2. Drag and drop the entire `html/` folder (or zip the contents of `html/` and upload).
-3. Name your app and deploy.
-4. Note: For updates you'll need to re-upload, so Git-connected is better long-term.
+2. Upload the entire `html/` folder (or a zip of its contents).
+3. Name the app and deploy.
+4. Note: Git-connected deploys are preferred for updates (push to trigger rebuilds).
 
-### Adding Your Custom Domain (amdgtechnologies.com from GoDaddy) — Important: Decline the Route 53 Hosted Zone
+### Adding a Custom Domain — Important: Manual DNS Records Only (Protect Email)
 
-**Critical warning for your situation (Google Workspace email on GoDaddy):**
+**Critical: Do not create a Route 53 hosted zone if the domain's DNS and email (e.g. MX records) are managed at an external registrar such as GoDaddy.**
 
-When you click "Add domain" in Amplify and enter `amdgtechnologies.com`, AWS will often show a prominent option like:
+When adding a custom domain in Amplify:
 
-> "Create a hosted zone in Route 53" or "Let Amplify manage your DNS with Route 53" or "Create hosted zone".
+AWS often prompts with an option to "Create a hosted zone in Route 53" or similar ("Let Amplify manage your DNS with Route 53").
 
-**Do NOT choose this.** 
+**Do NOT select this.**
 
-Choosing it will:
-- Create a new hosted zone in Route 53.
-- Give you new nameserver values.
-- Require you to change the nameservers at GoDaddy to Route 53's nameservers.
-- This will **break your Google Workspace email** (MX records) unless you manually recreate every single email-related record (MX, SPF, DKIM, DMARC, etc.) in Route 53 perfectly. This is error-prone and risky.
+Selecting it would:
+- Provision a Route 53 hosted zone.
+- Provide new nameserver values.
+- Require updating nameservers at the registrar.
+- Risk breaking email delivery (MX, SPF, DKIM, DMARC, etc.) unless every email-related record is manually and correctly recreated in Route 53. This is error-prone.
 
-**Correct action on that screen:**
+**Correct choice on the domain addition screen:**
 
-- Look for and select the option that says something like:
-  - "I'll add the records myself" 
-  - "Manage DNS at my current registrar (GoDaddy)"
-  - "Add records manually"
-  - Or any choice that does **not** involve creating a Route 53 hosted zone / changing nameservers.
+Select the manual option, such as:
+- "I'll add the records myself"
+- "Manage DNS at my current registrar"
+- "Add records manually"
+- Any path that avoids creating a hosted zone or changing nameservers at the registrar.
 
-- Amplify will then show you the **exact list of records** you need to add at GoDaddy (verification CNAMEs + www CNAME + possibly apex A records).
+Amplify will then display the precise list of records required (typically verification CNAMEs, a CNAME for `www`, and possibly A/ALIAS records for the apex).
 
-**Then:**
-1. Go to GoDaddy → Manage DNS for amdgtechnologies.com.
-2. Add **only** the new records Amplify listed. Copy them exactly (type, name, value).
-3. **Do not delete or modify** any existing records, especially the MX records for Google Workspace.
-4. Save.
+**At the domain registrar:**
 
-Amplify will detect the records once they propagate and issue the SSL certificate.
+1. Add **only** the records listed by Amplify. Match record type, name/host, and value exactly.
+2. Do **not** delete or modify any existing records — especially MX records (and related SPF/DKIM) that support email services.
+3. Save changes.
 
-**On the screen you are currently on (subdomain mapping + SSL choice):**
+Amplify monitors for propagation and will proceed to issue the certificate once the records are live.
 
-This is the configuration screen for mapping your subdomains (like www) to specific branches of your app, and choosing how to handle the SSL certificate.
+**Subdomain mapping and SSL screen (after entering the root domain):**
 
-- The subdomain mappings look good (pointing to the "master" branch, which has your latest code).
-- The "Exclude root" is for not including the apex in that particular mapping if desired.
-- There is a checkbox for setting up a redirect (likely for the apex domain to www.amdgtechnologies.com or vice versa) – enable it if you want the naked domain to redirect to www.
+- Map the desired subdomains (e.g. `www`) to the target branch (typically `master`).
+- Use the apex redirect checkbox if a redirect from the naked domain to `www` (or vice versa) is desired.
+- For SSL: select **Amplify managed certificate** (recommended). This provisions a free certificate in ACM, handles validation via the DNS records, and auto-renews.
+- Avoid the "Custom SSL certificate" option unless an existing ACM certificate is already prepared for import.
 
-**For the SSL certificate question:**
+After configuration, click "Add domain".
 
-**Yes, let Amplify manage your SSL certificate.** 
+Amplify will then present the exact DNS records to add at the registrar. Add them (as the indicated types, usually CNAME), return to Amplify, and wait for verification.
 
-Change the radio button selection from "Custom SSL certificate" to **"Amplify managed certificate"** (the top one).
+This process results in the custom domain serving with HTTPS.
 
-- This is the recommended and simplest option.
-- Amplify will automatically create and manage a free SSL certificate for you in AWS Certificate Manager (ACM), including validation (using the DNS records you will add) and automatic renewal.
-- The "Custom SSL certificate" option is for advanced users who want to import or use their own existing certificate from ACM. Since none are found, it would require you to create one manually first, which is unnecessary here.
+### Recommended DNS Strategy (Keep DNS at Registrar)
 
-After selecting Amplify managed, complete any other config (the subdomain fields), then click the **"Add domain"** button at the bottom right.
+- Retain nameserver management at the original registrar (e.g. GoDaddy). This protects any existing email configuration (MX records and related).
+- Add *only* the specific A/CNAME records that Amplify provides for domain verification and routing.
+- Configure `www` as the primary hostname via its CNAME.
+- For the apex/naked domain:
+  - Add any A records provided by Amplify, or
+  - Use registrar domain forwarding (e.g. forward apex to `www`) as a simple solution.
+- After domain verification in Amplify, optionally configure a 301 redirect from apex to www under Domain management → Edit for a clean canonical experience.
 
-After clicking "Add domain", Amplify will display the specific DNS records (these will be CNAME records) that you must add in your GoDaddy DNS manager.
+### Propagation and Verification Phase (After Adding Records at the Registrar)
 
-Go add exactly those in GoDaddy (as CNAME record type), without changing nameservers or touching your email MX records.
+After the required records are added at the registrar, the system enters the propagation and verification phase.
 
-Then return to Amplify to verify.
+**Monitor propagation:**
 
-This should get your custom domain live with HTTPS.
+- Use https://www.whatsmydns.net/ — check both the apex and `www` subdomains.
+- Look for resolution changing to Amplify/CloudFront targets (instead of registrar defaults or parking pages).
 
-### Recommended DNS Strategy (Stay with GoDaddy for now)
-
-- Keep your nameservers at GoDaddy (this protects email).
-- Only add the specific A/CNAME records Amplify provides for the custom domain.
-- Make `www.amdgtechnologies.com` your primary (add the CNAME for www).
-- For the naked domain (`amdgtechnologies.com`), you can:
-  - Add the A records Amplify provides (if given), or
-  - Use GoDaddy's domain forwarding (forward the root to www) as a simple temporary/permanent solution.
-- In Amplify, after the domain is verified, go to Domain management → your domain → Edit and add a 301 redirect rule from the apex to www for a clean experience.
-
-### After Adding Records in GoDaddy (You're Here — Waiting for Propagation)
-
-You're in the waiting phase — perfect, the hard part (adding records correctly without breaking email) is done.
-
-**How to monitor propagation:**
-
-- Primary tool: https://www.whatsmydns.net/
-  - Check **both** `amdgtechnologies.com` and `www.amdgtechnologies.com`
-  - Look for the records to start resolving to Amplify/CloudFront values (you'll see something like a CloudFront domain or the Amplify target instead of GoDaddy parking).
-
-- Command-line checks (run these every 10-15 min):
+- CLI checks (repeat periodically):
   ```bash
   dig +short www.amdgtechnologies.com
   dig +short amdgtechnologies.com
   dig amdgtechnologies.com
   ```
-  - Eventually you should see the Amplify target in the output.
+  - Successful propagation shows the Amplify target values.
 
-- Propagation time: Usually 5-30 minutes, but can take a few hours depending on TTLs and DNS caches. Be patient and keep checking.
+- Typical propagation: 5–30 minutes, but can extend to hours based on TTLs and caching. Monitor until consistent.
 
-**Once propagation succeeds (whatsmydns shows the new Amplify targets for both domains):**
+**Once propagation is confirmed (new targets visible on whatsmydns for both names):**
 
-1. Go back to the Amplify Console → your app → **Domain management**.
-2. The status for `amdgtechnologies.com` (and www) should update from "Pending verification" or similar to **"Available"**.
-3. Amplify will **automatically** start provisioning the free SSL certificate (since you're using Amplify managed certificate).
-   - This step can take 5-60+ minutes.
-   - Watch the status — it will go through "Pending validation" → "Issued".
-   - No action needed from you — validation uses the DNS records you added.
+1. Return to the Amplify Console for the app → **Domain management**.
+2. Domain status should advance from "Pending verification" (or equivalent) to **"Available"**.
+3. Amplify automatically provisions the free managed SSL certificate.
+   - Provisioning typically takes 5–60+ minutes.
+   - Status transitions: "Pending validation" → "Issued".
+   - No manual intervention required for validation (it uses the added DNS records).
 
-**Test when fully live (status = "Issued" + green/available + HTTPS works):**
+**Production verification (once status is "Issued", domain resolves, and HTTPS is active):**
 
-1. Visit in browser (incognito recommended):
+1. Browse (use incognito to avoid cache):
    - https://www.amdgtechnologies.com
-   - https://amdgtechnologies.com (if apex is configured or forwarding is set)
+   - https://amdgtechnologies.com (if apex configured or forwarded)
 
-2. Full production test checklist:
-   - Dark modern theme + hero video background loads and plays your final approved animation.
-   - Animation details visible: A with pulsing semantic network, M with **red** EKG trace, D with compass, G with **green** electricity animating along the PCB traces.
-   - Video loops smoothly, is muted, performs well.
-   - "Explore the Mark" link scrolls to the logo meaning sections (A/M/D/G explanations).
-   - Bottom links work (LinkedIn, Facebook).
-   - No errors in browser console (F12 → Console tab) — especially no 404s on the .mp4 or poster .png.
-   - Responsive on mobile (try phone or resize browser; video should adapt, text readable).
-   - The ~1.5 MB video loads at a reasonable speed over your connection.
+2. Verification checklist:
+   - Dark modern theme and hero video load; the approved animation plays as full-bleed background.
+   - Animation content: A (pulsing semantic/network), M (**red** EKG trace), D (compass), G (**green** electricity tracing PCB paths).
+   - Video loops cleanly, muted, good performance.
+   - "Explore the Mark" scrolls to the quadrant explanations.
+   - Footer links (LinkedIn, Facebook) function.
+   - Browser console (F12) shows no 404s or load errors for video/poster assets.
+   - Responsive behavior on mobile viewports.
+   - Video asset size (~1.5 MB) loads promptly.
 
-3. **Critical email verification** (do this every time DNS changes):
-   - Send test emails **to** both `info@amdgtechnologies.com` and `mpeaton@amdgtechnologies.com`.
-   - Send emails **from** them as well.
-   - Confirm full round-trip works and no delivery issues.
-   - If email breaks: Immediately check GoDaddy DNS — you may have accidentally edited an MX record. Revert if needed. The site will still work via the Amplify URL.
+3. Email round-trip verification (perform after any DNS modification):
+   - Send test messages **to** the configured addresses (e.g. `info@...` and primary contact address).
+   - Send from those addresses as well.
+   - Confirm successful delivery both directions with no bounces or delays.
+   - If email is impacted: inspect the registrar DNS immediately for unintended MX changes and revert. The site remains accessible via the Amplify URL in the interim.
 
-**Safety net at this stage:**
+**Safety net:**
 
-- If anything looks broken after propagation/SSL, you can temporarily remove the custom domain in Amplify (Domain management → remove). The site instantly reverts to your safe `*.amplifyapp.com` URL.
-- Email should remain unaffected because you only *added* records in GoDaddy (never changed nameservers or deleted MX records).
+- If post-propagation or SSL issues arise, remove the custom domain mapping in Amplify (Domain management). The app instantly falls back to the `*.amplifyapp.com` URL.
+- Email configuration is preserved provided only additive records were introduced at the registrar (no nameserver swap or MX deletions).
 
-**Once everything passes:**
+**After successful verification:**
 
 - Update `linkedin-post-draft.md` with the live custom domain URL(s).
-- Post the announcement (attach the final video + poster for maximum impact).
-- Future updates to the site: just `git push origin master` — Amplify will automatically build and deploy (using your `amplify.yml`).
+- Future site updates: `git push` to the tracked branch triggers automatic Amplify rebuild and deploy via `amplify.yml`.
 
-The animation and full site should now be publicly live on your custom domain(s) with proper HTTPS and the beautiful blocks animation as the hero.
-
-**Next for you right now:** Keep an eye on https://www.whatsmydns.net/ and the Amplify Domain management status. When the records propagate and status goes "Available", the SSL provisioning will start automatically. Let me know the results from whatsmydns/dig or when the Amplify status changes, and I'll guide you on the exact next verification steps or tests.
-
-If you want, I can also help prepare a simple "site is live" announcement post or update any other assets. Just say the word.
+The site is now served publicly on the custom domain(s) over HTTPS with the approved animation as the hero.
 
 ### Updating the Live Site
-- With Git connected: Just push changes. Amplify will redeploy.
-- The video (`amdg-animation-final.mp4`) and poster are in `html/resources/` and will be served efficiently.
+- Git-connected: push changes to the tracked branch; Amplify automatically rebuilds and deploys.
+- Video and poster assets reside in `html/resources/` and are served via the CDN.
 
 ### Future-Proofing for Apps/Services
-When you want to add backend:
-- In the same Amplify app, you can add:
-  - API (GraphQL or REST with AppSync or API Gateway + Lambda)
+To add backend capabilities later:
+- Within the same Amplify app/project, add:
+  - APIs (GraphQL via AppSync or REST via API Gateway + Lambda)
   - Authentication (Cognito)
-  - Database (DynamoDB, etc.)
-  - Functions
-  - Hosting for multiple frontends if needed
-All under one project and one billing account.
+  - Databases (e.g. DynamoDB)
+  - Lambda functions
+  - Additional frontend hosting as needed
+Everything remains under one project and AWS account.
 
-### DNS Strategy (Keep DNS at GoDaddy)
-- Manage DNS at GoDaddy to protect your Google Workspace email configuration.
-- Only add the A/CNAME records that Amplify tells you to add.
-- Do not point nameservers to AWS unless you are prepared to fully manage DNS (including recreating all Google Workspace records in Route 53).
+### DNS Strategy (Keep DNS at Original Registrar)
+- Continue managing DNS at the registrar (e.g. GoDaddy) to safeguard email records (MX and ancillary).
+- Introduce only the A/CNAME records supplied by Amplify.
+- Avoid switching nameservers to AWS/Route 53 unless prepared to replicate the entire email record set (MX/SPF/DKIM/etc.) exactly in the new zone.
 
 ### Cost Estimate
-- Amplify hosting for a small static site like this: usually $0/month on the free tier.
-- Custom domain + SSL: free.
-- Data transfer: very low for this site.
-- As you add backend services, costs will scale with usage (still very affordable to start).
+- Amplify static hosting for low-traffic sites: typically $0 on the free tier.
+- Custom domain + managed SSL: free.
+- Data transfer: minimal for this asset-light site.
+- Backend additions (if any) scale with usage; base hosting remains low-cost to start.
 
 ### Files Prepared for Amplify
-- `amplify.yml` — root of the project (tells Amplify this is static and where the files are).
-- `html/index.html` + `html/resources/` — the complete site (including the final animation).
+- `amplify.yml` — root (declares static site and `html` output).
+- `html/index.html` + `html/resources/` — complete site assets including the approved animation.
 
 ### Post-Deployment
-- Update `linkedin-post-draft.md` with the live `https://www.amdgtechnologies.com` URL.
-- Consider setting up a redirect from the root to www in Amplify (under Rewrites and redirects) if you want the apex to forward.
-- Monitor in the Amplify console (analytics, logs, etc. are available even for static hosting).
+- Update announcement drafts (e.g. `linkedin-post-draft.md`) with the final live URL once verified.
+- Optionally add an apex-to-www (or www-to-apex) 301 redirect in Amplify under Rewrites and redirects.
+- Use the Amplify console for monitoring (analytics and logs available for static apps).
 
 ---
 
 ## Other Options (for reference)
 
-### Firebase Hosting (Google ecosystem)
-Still viable since you have Google Business, but since you chose AWS for ecosystem consistency, we're focusing on Amplify.
+### Firebase Hosting
+Viable alternative in the Google ecosystem. This guide focuses on Amplify per the project's AWS preference.
 
 ### GoDaddy Hosting
-Not recommended (more expensive, less performant).
+Not recommended for performance and cost reasons compared to dedicated static hosts/CDNs.
 
-### S3 + CloudFront (more manual control)
-Only if you specifically want to avoid Amplify's managed experience. More steps for custom domain and SSL.
+### S3 + CloudFront
+Provides more manual control but requires additional steps for custom domains, SSL, and CI/CD. Use only if Amplify's managed workflow is explicitly undesired.
 
-See the older sections below if you ever want to switch.
+Older sections below may be referenced if switching approaches later.
 
 ## Quick DNS + Email Reminder
-- Keep your DNS management at GoDaddy (do not change nameservers).
-- This protects your existing Google Workspace email configuration (MX records for mpeaton@ and info@).
-- Amplify will tell you exactly which additional CNAME records to add at GoDaddy for the custom domain and verification.
-- Test email thoroughly after adding records.
+- Retain DNS management at the registrar (never change nameservers for this domain while email is configured there).
+- This safeguards MX and related records for email services.
+- Amplify supplies only the supplemental CNAME (and any A) records needed for the custom domain + verification.
+- Always re-verify email delivery after registrar DNS modifications.
 
-## Detailed AWS Amplify Console Steps (Current Choice)
+## Detailed AWS Amplify Console Steps
 
-1. **Sign in to AWS Console** → Search for "Amplify" → Go to Amplify Hosting.
+1. Sign in to the AWS Console → locate Amplify → open Amplify Hosting.
 
-2. **Create new app**
-   - "New app" → "Host web app" (or "Deploy without Git" for testing).
-   - If using Git: Authorize your Git provider, select repo and branch (main/master).
-   - Amplify should auto-detect the `amplify.yml` file.
+2. Create a new app
+   - Choose "New app" → "Host web app" (or "Deploy without Git" for an initial test).
+   - For Git-backed: authorize the provider, select the repository and branch (`master`).
+   - Amplify should discover the committed `amplify.yml`.
 
-3. **Review build settings**
-   - Because we committed `amplify.yml` in the repo, Amplify should auto-detect it.
-   - On the "Build settings" screen it will likely show (or you can set via "Override build settings"):
-     - **Frontend build command**: `echo "Static assets ready for deployment"`
-       (or leave the field blank — the amplify.yml takes precedence)
+3. Review / confirm build settings
+   - With `amplify.yml` present in the repo, settings are typically detected automatically.
+   - On the build settings screen (or via "Override build settings"):
+     - **Frontend build command**: `echo "Static assets ready for deployment"` (or leave blank; the YML takes precedence)
      - **Build output directory**: `html`
-   - Accept the detected values or override to exactly match above.
-   - If you see a full YAML editor / "Edit" link for the build spec (common on this screen), you **can paste the entire content of your local `amplify.yml` file** there. That's perfectly valid and explicit. Just copy the whole file and paste it in.
-   - Save and deploy. First build usually takes 1-3 minutes.
+   - Match the values exactly if overriding.
+   - If a full YAML build spec editor is available ("Edit" link or YAML view), the entire contents of `amplify.yml` may be pasted there for explicit configuration. This is valid and recommended when the simple fields feel insufficient.
+   - Save and deploy. Initial builds usually complete in 1–3 minutes.
 
-   **Key point**: This site is 100% static (no package.json, no build tools). The only thing Amplify needs to know is "serve everything from the `html/` folder". The `amplify.yml` we added makes this explicit and future-proof. Pasting the full YML is one of the cleanest ways if the simple two fields feel limited.
+   **Note**: The site is purely static. Amplify only needs to know to serve the contents of the `html/` directory. The committed `amplify.yml` documents this explicitly.
 
-## Testing Your Amplify Deployment (Right Now)
+## Testing an Amplify Deployment
 
-Since your app is already pushed and set up in Amplify:
+1. Locate the active Amplify URL
+   - In the app overview, find the "Hosting" section or branch entry.
+   - Open the generated URL (e.g. `https://main.<id>.amplifyapp.com` or branch variant).
+   - Prefer incognito to skip local cache.
 
-1. **Find your current Amplify URL**:
-   - Go to the AWS Amplify Console > your app.
-   - On the overview page, look for the "Hosting" section or the branch (usually "main" or "master").
-   - Click the link — it will be something like `https://main.<random-id>.amplifyapp.com` or `https://<branch>.d<id>.amplifyapp.com`.
-   - Open in incognito to bypass cache.
+2. Execute verification steps
+   - Confirm dark theme and hero video playback (approved animation with red EKG on M, green trace-following on G, etc.).
+   - Verify smooth looping, muted audio, proper background coverage.
+   - Test scroll link to "Explore the Mark".
+   - Confirm external links (LinkedIn, Facebook).
+   - Inspect console (F12) for missing asset 404s.
+   - Validate responsive layout and acceptable video load time (~1.5 MB).
 
-2. **Run these tests**:
-   - Dark modern theme loads.
-   - Hero video plays the approved animation (red EKG on M, green electricity following PCB traces on G, etc.).
-   - Video loops, muted, background covers properly.
-   - "Explore the Mark" scrolls to the logo section.
-   - Links to LinkedIn/Facebook work.
-   - Browser console (F12) has no 404 errors for the .mp4 or .png.
-   - Mobile/responsive test (video still works, readable).
-   - Video loads at reasonable speed (~1.5 MB file).
+3. Inspect build status
+   - In the app's Builds or Hosting tab, ensure the latest run succeeded (green).
+   - Review logs on any failure.
 
-3. **Check build**:
-   - In Amplify app > "Builds" or "Hosting" tab, confirm the latest push has a green success.
-   - If red, click the build to see logs.
+4. Email sanity check (pre-custom-domain)
+   - Exercise send/receive for all configured addresses to confirm email infrastructure is unaffected.
 
-4. **Pre-DNS email test**:
-   - Send/receive tests to `info@amdgtechnologies.com` and `mpeaton@amdgtechnologies.com` to confirm Google Workspace still works.
+**Recommendation**: Continue using the Amplify-provided URL for testing until the custom domain + SSL are fully issued and validated.
 
-**Tip:** Keep using this Amplify URL for testing until the custom domain is fully live and SSL issued.
+## Adding the Custom Domain (After Initial Amplify URL Validation)
 
-## (Duplicate section removed - see the detailed "Adding Your Custom Domain" instructions and the "Testing Your Amplify Deployment" section above for current guidance)
+Perform these steps only after the Amplify URL passes the checklist cleanly.
 
-**Only do this after the Amplify URL tests above pass cleanly.**
+1. In the Amplify Console for the app:
+   - Left navigation: **Domain management** → **Add domain**.
+   - Enter the root domain (e.g. `amdgtechnologies.com`) and continue.
 
-1. In Amplify Console:
-   - Open your app.
-   - Left menu: **Domain management** → **Add domain**.
-   - Enter `amdgtechnologies.com` → Continue.
+2. Amplify presents the records to add:
+   - Verification records (CNAMEs, often ACME challenge records).
+   - Routing records (CNAME for `www`; A/ALIAS for apex `@`).
 
-2. Amplify will show steps:
-   - **Verification records** (usually 1-2 CNAMEs like `_acme-challenge....`).
-   - **Routing records** (CNAME for `www`, A records for the apex `@`).
+3. At the domain registrar:
+   - Navigate to DNS management for the domain.
+   - Create **exactly** the records Amplify enumerated.
+   - **Do not delete or alter** existing MX, SPF, DKIM, DMARC, or other email-supporting records.
 
-3. Go to GoDaddy:
-   - Domain → Manage DNS.
-   - Add **exactly** the records Amplify listed.
-   - **Do NOT delete or change** any existing MX, SPF, DKIM, DMARC, or other Google Workspace records.
+4. Allow time for propagation (minutes to hours):
+   - Validate via https://www.whatsmydns.net/ (check apex + www).
+   - Or use `dig` for the names.
 
-4. Wait for DNS propagation (5 min – few hours):
-   - Check with https://www.whatsmydns.net/ for both `amdgtechnologies.com` and `www.amdgtechnologies.com`.
-   - Or `dig amdgtechnologies.com` and `dig www.amdgtechnologies.com`.
+5. Return to Amplify Domain management:
+   - Status should reach "Available".
+   - SSL provisioning begins automatically (monitor status; 5–60+ minutes typical).
 
-5. Back in Amplify:
-   - Status should update to "Available".
-   - Amplify auto-provisions free SSL (can take 5-60+ minutes). Watch the status.
-
-6. (Strongly recommended) Set up apex redirect:
-   - In Domain management for your domain → Edit.
-   - Add redirect:
+6. (Recommended) Configure apex redirect for canonical hostname:
+   - Domain management → Edit for the domain.
+   - Add 301 redirect rule, e.g.:
      - Source: `https://amdgtechnologies.com/*`
      - Target: `https://www.amdgtechnologies.com/:splat`
-     - Type: 301
 
-7. Final custom-domain tests:
-   - Visit both https://www.amdgtechnologies.com and https://amdgtechnologies.com.
-   - Run the full test checklist from the "Testing Your Amplify Deployment (Right Now)" section.
-   - Re-confirm email still works perfectly.
+7. Final validation on custom domain(s):
+   - Visit both apex and www variants.
+   - Re-run the full test checklist.
+   - Re-confirm email round-trips.
 
-**Safety net**: If DNS gets messed up, just remove the custom domain in Amplify (it reverts to the Amplify URL). Your email MX records are untouched as long as you only *added* records in GoDaddy.
+**Safety net**: Removing the custom domain in Amplify instantly restores the Amplify URL. Email records remain safe when only additive changes were made at the registrar.
 
-## Quick Reference - What to Do Next (Current State)
+## Quick Reference
 
-- Test the current Amplify URL immediately (detailed checklist in "Testing Your Amplify Deployment (Right Now)").
-- Once happy, go to Domain management in Amplify → Add domain.
-- **Decline the Route 53 hosted zone creation.** Choose manual records at GoDaddy.
-- Add **exactly** the records Amplify lists (preserve all Google Workspace MX etc. records).
-- Wait for propagation + SSL.
-- Set up apex redirect if desired.
-- Re-test + update LinkedIn draft.
+- Validate the initial Amplify URL with the checklist.
+- Proceed to Domain management → Add domain only after success.
+- **Decline Route 53 hosted zone creation**; choose manual record addition at the registrar.
+- Add precisely the records Amplify specifies; leave all pre-existing email records untouched.
+- Wait for propagation, then for SSL issuance.
+- Optionally add apex redirect.
+- Re-test fully; update any announcement drafts with live URLs.
 
-Future changes: just push to master — Amplify auto-deploys.
-
-If you hit any error on the screen (especially the hosted zone prompt text), paste the exact options here and I'll give the precise click.
+Ongoing updates: push to the deployment branch — Amplify handles the rest via the committed `amplify.yml`.
