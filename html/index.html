@@ -23,6 +23,7 @@
     .hero {
       position: relative;
       height: 100vh;
+      height: 100dvh; /* modern dynamic viewport for mobile (avoids address bar issues) */
       display: flex;
       align-items: center;
       justify-content: center;
@@ -32,6 +33,7 @@
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
       object-fit: cover;
+      object-position: center center;
       z-index: -1;
       filter: brightness(0.92);
     }
@@ -125,6 +127,27 @@
       font-size: 0.85rem;
       opacity: 0.6;
       border-top: 1px solid #22262c;
+    }
+
+    /* Responsive adjustments for the hero video animation */
+    @media (orientation: portrait) {
+      .hero-video {
+        /* Bias towards the left side of the video (where the 2x2 blocks are)
+           so the important visual mark remains visible in portrait mode.
+           The right side (text) will be cropped more, which is acceptable
+           on narrow screens. */
+        object-position: left center; /* Align left edge of video (2x2 blocks) to left of screen; crops right side (text) more in portrait */
+      }
+    }
+
+    @media (max-width: 640px) {
+      /* On very small screens, we can optionally reduce hero height
+         slightly if 100vh feels too much, but keep immersive by default.
+         Uncomment if desired:
+      .hero {
+        height: 80vh;
+      }
+      */
     }
   </style>
 </head>
