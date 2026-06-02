@@ -65,31 +65,66 @@ The repo has been prepared with:
 3. Name your app and deploy.
 4. Note: For updates you'll need to re-upload, so Git-connected is better long-term.
 
-### Adding Your Custom Domain (amdgtechnologies.com from GoDaddy)
+### Adding Your Custom Domain (amdgtechnologies.com from GoDaddy) — Important: Decline the Route 53 Hosted Zone
 
-1. In your Amplify app, go to **Domain management** → **Add domain**.
-2. Enter `amdgtechnologies.com`.
-3. Amplify will:
-   - Verify domain ownership (you'll get a CNAME record to add at GoDaddy for verification).
-   - Provide the DNS records you need to add at GoDaddy.
-4. **Important for your Google Workspace email:**
-   - **Do NOT change your nameservers at GoDaddy.**
-   - Add only the specific records Amplify asks for (usually a CNAME for `www` pointing to the Amplify domain, and verification CNAMEs).
-   - Your existing MX records for Google Workspace (for mpeaton@ and info@) must stay exactly as they are.
-5. For the apex domain (`amdgtechnologies.com` without www):
-   - Amplify will give you instructions. If GoDaddy doesn't support the required record type easily, a common pattern is:
-     - Make `www.amdgtechnologies.com` the primary.
-     - Set up a redirect from the root to www (Amplify can help, or use GoDaddy's domain forwarding as a temporary measure).
-   - Once added, Amplify provisions a free SSL cert automatically.
+**Critical warning for your situation (Google Workspace email on GoDaddy):**
 
-6. Wait for DNS propagation (usually 5-30 minutes, up to a few hours).
-7. In Amplify, enable "HTTPS" (it should be automatic) and set your preferred domain (www or non-www).
+When you click "Add domain" in Amplify and enter `amdgtechnologies.com`, AWS will often show a prominent option like:
 
-### Testing Email After Domain Changes
-After adding the DNS records:
-- Send a test email to both `mpeaton@amdgtechnologies.com` and `info@amdgtechnologies.com`.
-- Send from those addresses too.
-- If email breaks, double-check that you didn't accidentally modify the MX records.
+> "Create a hosted zone in Route 53" or "Let Amplify manage your DNS with Route 53" or "Create hosted zone".
+
+**Do NOT choose this.** 
+
+Choosing it will:
+- Create a new hosted zone in Route 53.
+- Give you new nameserver values.
+- Require you to change the nameservers at GoDaddy to Route 53's nameservers.
+- This will **break your Google Workspace email** (MX records) unless you manually recreate every single email-related record (MX, SPF, DKIM, DMARC, etc.) in Route 53 perfectly. This is error-prone and risky.
+
+**Correct action on that screen:**
+
+- Look for and select the option that says something like:
+  - "I'll add the records myself" 
+  - "Manage DNS at my current registrar (GoDaddy)"
+  - "Add records manually"
+  - Or any choice that does **not** involve creating a Route 53 hosted zone / changing nameservers.
+
+- Amplify will then show you the **exact list of records** you need to add at GoDaddy (verification CNAMEs + www CNAME + possibly apex A records).
+
+**Then:**
+1. Go to GoDaddy → Manage DNS for amdgtechnologies.com.
+2. Add **only** the new records Amplify listed. Copy them exactly (type, name, value).
+3. **Do not delete or modify** any existing records, especially the MX records for Google Workspace.
+4. Save.
+
+Amplify will detect the records once they propagate and issue the SSL certificate.
+
+### Recommended DNS Strategy (Stay with GoDaddy for now)
+
+- Keep your nameservers at GoDaddy (this protects email).
+- Only add the specific A/CNAME records Amplify provides for the custom domain.
+- Make `www.amdgtechnologies.com` your primary (add the CNAME for www).
+- For the naked domain (`amdgtechnologies.com`), you can:
+  - Add the A records Amplify provides (if given), or
+  - Use GoDaddy's domain forwarding (forward the root to www) as a simple temporary/permanent solution.
+- In Amplify, after the domain is verified, go to Domain management → your domain → Edit and add a 301 redirect rule from the apex to www for a clean experience.
+
+### After Adding Records in GoDaddy
+
+- Wait for propagation (use https://www.whatsmydns.net/ to check).
+- Back in Amplify Domain management, the status should change to "Available".
+- Amplify will automatically provision a free SSL certificate (can take 5-60 minutes; watch the status).
+- Once "Issued", your site will be live on https://www.amdgtechnologies.com (and the apex if you set it up).
+
+### Test After Custom Domain + SSL
+
+- Visit https://www.amdgtechnologies.com and https://amdgtechnologies.com
+- Run the full test checklist (animation plays correctly with red EKG / green PCB electricity, no console errors, links work, responsive).
+- Send/receive test emails to both addresses to confirm Google Workspace is 100% intact.
+
+**Safety net**: If anything goes wrong, remove the custom domain in Amplify (it immediately falls back to the Amplifyapp.com URL). Your email will continue working because you never touched the MX records.
+
+If Amplify is forcing the hosted zone or the options aren't clear, copy-paste the exact text/options you see on the screen here and I'll give you the precise clicks.
 
 ### Updating the Live Site
 - With Git connected: Just push changes. Amplify will redeploy.
@@ -196,7 +231,7 @@ Since your app is already pushed and set up in Amplify:
 
 **Tip:** Keep using this Amplify URL for testing until the custom domain is fully live and SSL issued.
 
-## Updating GoDaddy DNS (Pointing amdgtechnologies.com)
+## (Duplicate section removed - see the detailed "Adding Your Custom Domain" instructions and the "Testing Your Amplify Deployment" section above for current guidance)
 
 **Only do this after the Amplify URL tests above pass cleanly.**
 
@@ -231,20 +266,21 @@ Since your app is already pushed and set up in Amplify:
 
 7. Final custom-domain tests:
    - Visit both https://www.amdgtechnologies.com and https://amdgtechnologies.com.
-   - Run the full test checklist from the Testing section.
+   - Run the full test checklist from the "Testing Your Amplify Deployment (Right Now)" section.
    - Re-confirm email still works perfectly.
 
 **Safety net**: If DNS gets messed up, just remove the custom domain in Amplify (it reverts to the Amplify URL). Your email MX records are untouched as long as you only *added* records in GoDaddy.
 
-## Quick Reference - What to Do Next
+## Quick Reference - What to Do Next (Current State)
 
-- Test the current Amplify URL immediately (see "Testing Your Amplify Deployment" above).
+- Test the current Amplify URL immediately (detailed checklist in "Testing Your Amplify Deployment (Right Now)").
 - Once happy, go to Domain management in Amplify → Add domain.
-- Add the exact records Amplify gives you in GoDaddy DNS (preserve all Google email records).
+- **Decline the Route 53 hosted zone creation.** Choose manual records at GoDaddy.
+- Add **exactly** the records Amplify lists (preserve all Google Workspace MX etc. records).
 - Wait for propagation + SSL.
-- Update your LinkedIn post draft with the new live URL and announce.
-- Future changes: just `git push` — Amplify will auto-deploy.
+- Set up apex redirect if desired.
+- Re-test + update LinkedIn draft.
 
-The animation and site should now be live on your custom domain with proper HTTPS.
+Future changes: just push to master — Amplify auto-deploys.
 
-If you hit any error (e.g. paste the exact DNS records Amplify shows you, or a build error, or propagation issue), share the details and I'll give the precise fix.
+If you hit any error on the screen (especially the hosted zone prompt text), paste the exact options here and I'll give the precise click.
