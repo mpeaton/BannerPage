@@ -37,6 +37,7 @@ No complex build command is needed — this is a pure static site. The `amplify.
 - `DEPLOYMENT.md` — hosting instructions
 - `linkedin-post-draft.md` — suggested announcement post
 - `html/resources/logos/` — all historical logo explorations + the approved final assets + review frames
+- `html/resources/social/` — curated thumbnails for LinkedIn/company page (square mark for profile pic, full frame + optimized banner/post sizes from the approved design)
 
 ## Quick Local Preview
 From the project root:
