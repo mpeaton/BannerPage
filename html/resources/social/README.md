@@ -23,8 +23,9 @@ These are the recommended static thumbnails and marks extracted from the **final
 - **Cover / Banner Photo** (wide): `logo-banner-linkedin-1584x396.jpg` (1584x396)
   - Exact recommended LinkedIn cover size (4:1 aspect ratio, 1584x396).
   - Black/gray tech-inspired background (dark gradient with subtle grid lines for high-tech feel, matching the logo's dark aesthetic).
-  - The square 2x2 logo mark is placed on the right side (with ample space on the left ~400px for the profile picture to overlap without occluding the logo design in the 'view as member' layout).
-  - This prevents stretching and logo overlap issues.
+  - The square 2x2 logo mark (four quadrants) is placed on the right side (with ample space on the left ~400px for the profile picture to overlap without occluding the logo design in the 'view as member' layout).
+  - Includes the company name "AMDG Technologies, Inc." and tagline in elegant light gray text on the left-center for branding.
+  - This prevents stretching and logo overlap issues. Use this for the cover photo.
 
 ### For Posts, Video Attachments, Shares
 - **Video Thumbnail / Post Image** (landscape from animation): `logo-full-frame-1280x720.png` (1280x720)
@@ -44,8 +45,8 @@ These are the recommended static thumbnails and marks extracted from the **final
 - PNGs are lossless for best quality on upload.
 - For LinkedIn video posts: Attach the MP4 from `html/resources/amdg-animation-final.mp4` (now includes sound). The 1280x720 PNG makes an excellent preview image.
 - If you need different crops, sizes, or light versions, provide details and we can generate more.
-- Source for square: cropped from animation frame resources/Untitled 5.jpg (high quality render of the final 2x2).
-- Banner: custom tech background with the square logo composited on the right.
+- Source for square: cropped/resampled from animation frame resources/Untitled 5.jpg (high quality render of the final 2x2 four quadrants).
+- Banner: custom black/gray tech background (gradient + grid) with the square logo on the right + text on left-center.
 - Other masters in `../logos/`.
 
 Generated/selected on launch of https://www.amdgtechnologies.com/
