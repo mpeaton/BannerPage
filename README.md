@@ -2,14 +2,14 @@
 
 This is the source for the AMDG Technologies website.
 
-## Current Status (Approved)
+## Current Status (Live)
 - **Logo + Animation**: The final approved version is the simple 2x2 animated blocks (no robot arm).
   - A: semantic/AI network (blue)
   - M: red with animated EKG trace (medical signal processing)
   - D: gold compass
   - G: green with PCB + green electricity animation following the traces
-- **Video**: `html/resources/amdg-animation-final.mp4` (and poster `amdg-poster.png`)
-- **Website**: Modern dark single-page site with the animation as full-bleed hero. See `html/index.html`.
+- **Video**: `html/resources/amdg-animation-final.mp4` (with original audio track; sound toggle available on site) + poster `amdg-poster.png`
+- **Website**: Modern dark single-page site with the animation as full-bleed hero (including optional sound toggle). Live at https://www.amdgtechnologies.com/. See `html/index.html`.
 
 ## Hosting
 **Using AWS Amplify** (chosen to stay in AWS ecosystem for future apps/services).
@@ -46,5 +46,11 @@ python -m http.server 8000
 ```
 Then open http://localhost:8000
 
+## Live Site
+- https://www.amdgtechnologies.com/ (primary)
+- Apex (amdgtechnologies.com) currently resolves via existing Google records/forwarding (www is the connected hostname in Amplify).
+
+The site is fully deployed and live via AWS Amplify + custom domain from GoDaddy (with Google Workspace email preserved).
+
 ## Next
-Follow `DEPLOYMENT.md` to connect to AWS Amplify and point the GoDaddy domain.
+See `DEPLOYMENT.md` for ongoing maintenance, updates (just `git push`), and any apex setup details.

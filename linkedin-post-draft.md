@@ -37,7 +37,7 @@ What do you think?
 - For personal profile reach, consider a companion still-image post that links to the live site.
 
 **Website reference:**
-After deployment, link to the live custom domain (e.g. https://www.amdgtechnologies.com). The site sources are in `html/index.html` (hero uses the final animation). For local testing prior to deploy: from the `html/` directory run `python -m http.server` and open http://localhost:8000.
+Live site: https://www.amdgtechnologies.com/ (hero features the final animation with optional sound). The site sources are in `html/index.html`. For local testing: from the `html/` directory run `python -m http.server` and open http://localhost:8000.
 
 ---
 
@@ -51,7 +51,7 @@ A (AI & algorithms) • M (medical signal processing with live EKG) • D (guida
 
 Inspiring Technology, for Good.
 
-Full animation + story on the new site: [link]
+Full animation + story on the new site: https://www.amdgtechnologies.com/
 
 What do you think of the direction?
 

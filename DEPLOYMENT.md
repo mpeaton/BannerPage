@@ -209,9 +209,11 @@ All under one project and one billing account.
 - `html/index.html` + `html/resources/` — the complete site (including the final animation).
 
 ### Post-Deployment
-- Update `linkedin-post-draft.md` with the live `https://www.amdgtechnologies.com` URL.
-- Consider setting up a redirect from the root to www in Amplify (under Rewrites and redirects) if you want the apex to forward.
+- Site is live at https://www.amdgtechnologies.com/ (www hostname connected in Amplify; apex currently via existing Google records/forwarding).
+- `linkedin-post-draft.md` updated with the live URL.
+- Consider setting up a redirect from the root to www in Amplify (under Rewrites and redirects) if you want the apex to forward cleanly.
 - Monitor in the Amplify console (analytics, logs, etc. are available even for static hosting).
+- Future pushes to master will auto-deploy updates.
 
 ---
 
