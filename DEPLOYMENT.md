@@ -156,11 +156,12 @@ See the older sections below if you ever want to switch.
    - Amplify should auto-detect the `amplify.yml` file.
 
 3. **Review build settings**
-   - Because we committed `amplify.yml` in the repo, Amplify should auto-detect it and pre-fill:
-     - **Frontend build command**: `echo "Static assets ready for deployment"`  
-       (or you can leave this field blank — the `amplify.yml` takes precedence for static sites)
+   - Because we committed `amplify.yml` in the repo, Amplify should auto-detect it.
+   - On the "Build settings" screen it will likely show (or you can set via "Override build settings"):
+     - **Frontend build command**: `echo "Static assets ready for deployment"`
+       (or leave the field blank — the amplify.yml takes precedence)
      - **Build output directory**: `html`
-   - If the fields are editable / you see an "Override build settings" option, set them exactly as above.
+   - Accept the detected values or override to exactly match above.
    - Save and deploy. First build usually takes 1-3 minutes.
 
    **Key point**: This site is 100% static (no package.json, no build tools). The only thing Amplify needs to know is "serve everything from the `html/` folder". The `amplify.yml` we added makes this explicit and future-proof.

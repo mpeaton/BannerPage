@@ -16,8 +16,14 @@ frontend:
 # This file tells AWS Amplify:
 # - There is no npm/webpack/etc build needed (pure static HTML + CSS + video).
 # - The site files live in the `html/` directory (index.html + resources/).
-# In the Amplify console "Build settings":
-#   - Frontend build command: (can be left as the echo above, or blank)
+#
+# On the AWS Amplify "Build settings" screen (during app creation or editing):
+#   - Frontend build command: echo "Static assets ready for deployment"
+#     (or leave blank — the amplify.yml will be used)
 #   - Build output directory: html
+#
+# Amplify should auto-detect this amplify.yml when connecting the GitHub repo.
+# If it shows "Override build settings", use the values above.
+#
 # Note: For the animation video and poster, Amplify will serve them with good caching by default.
 # If you need longer cache for assets, you can configure in Amplify console under Rewrites and redirects.

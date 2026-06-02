@@ -21,9 +21,11 @@ This is the source for the AMDG Technologies website.
 - Domain: amdgtechnologies.com (managed at GoDaddy for email compatibility)
 
 ### Amplify Console Build Settings
-When connecting the repo or editing build settings:
+When you reach the "Build settings" screen while creating the app from the GitHub repo:
 - **Frontend build command**: `echo "Static assets ready for deployment"` (or leave blank)
 - **Build output directory**: `html`
+
+Amplify should auto-detect the `amplify.yml` we committed. If it offers "Override build settings", use the values above.
 
 No complex build command is needed — this is a pure static site. The `amplify.yml` handles everything.
 
