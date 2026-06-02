@@ -4,7 +4,7 @@ These are the recommended static thumbnails and marks extracted from the **final
 
 - A: blue semantic/AI network
 - M: red EKG trace (medical signal processing)
-- D: gold compass (guidance) with subtle circle frame in the quadrant (for consistency with the original hand-drawn logo's circle hinting at "sun or son")
+- D: gold compass (guidance) with subtle circle frame in the bottom-left quadrant (for consistency with the original hand-drawn logo's circle hinting at "sun or son")
 - G: green electricity following PCB traces
 - Relief/embossed letters
 - Text on exactly two lines: "AMDG Technologies, Inc." / "Inspiring Technology, for Good"
@@ -15,7 +15,7 @@ These are the recommended static thumbnails and marks extracted from the **final
 ### For LinkedIn Company Page
 - **Profile Picture / Logo** (square): `logo-mark-square-1024.png` (1024x1024)
   - Use this for the main company logo on LinkedIn, Twitter/X, etc.
-  - Clean 2x2 mark (blocks only), updated with subtle circle in the bottom-right (D) quadrant for consistency with the original logo.
+  - Clean 2x2 mark (blocks only), updated with subtle circle in the bottom-left (D) quadrant for consistency with the original logo.
   - High-res PNG.
   - LinkedIn will display it circular/square.
 
