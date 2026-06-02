@@ -32,14 +32,30 @@ It tells Amplify that this is a pure static site and the publish directory is `h
 #### Option 1: Connect Git Repository (Recommended for ongoing development)
 This project is **already on GitHub**: `git@github.com:mpeaton/BannerPage.git` (branch: `master`).
 
-1. Go to the AWS Amplify Console: https://console.aws.amazon.com/amplify/
-2. Click "New app" → "Host web app".
-3. Connect your Git provider (GitHub) and select the repository `mpeaton/BannerPage` and branch `master`.
-4. Amplify will detect the `amplify.yml` (we prepared it) and should auto-configure:
+The repo has been prepared with:
+- `amplify.yml`
+- Updated site in `html/`
+- `DEPLOYMENT.md`, top-level `README.md`, etc.
+- `.gitignore`
+
+1. Make sure your local changes (including the new deployment files we added) are committed and pushed:
+   ```bash
+   git add .
+   git commit -m "Prepare for AWS Amplify + update site with final animation"
+   git push origin master
+   ```
+   (We have already committed the key files locally in this session: amplify.yml, DEPLOYMENT.md, top-level README, .gitignore enhancements, updated index.html, and the final assets.)
+
+   The .gitignore now excludes historical design folders (logos/ etc.), old Netlify/Vercel configs, .DS_Store, legacy Python files, etc., keeping the repo clean for Amplify.
+
+2. Go to the AWS Amplify Console: https://console.aws.amazon.com/amplify/
+3. Click "New app" → "Host web app".
+4. Connect your Git provider (GitHub) and select the repository `mpeaton/BannerPage` and branch `master`.
+5. Amplify will detect the `amplify.yml` (we prepared it) and should auto-configure:
    - Build settings: Use the provided `amplify.yml`
    - Publish directory: `html`
-5. Review and click "Save and deploy". It will build and deploy automatically.
-6. Once deployed, you'll get a URL like `https://main.xxxxx.amplifyapp.com`.
+6. Review and click "Save and deploy". It will build and deploy automatically.
+7. Once deployed, you'll get a URL like `https://main.xxxxx.amplifyapp.com`.
 
 **Note:** If Amplify doesn't auto-detect the publish dir, manually set it to `html` in the app settings after creation.
 

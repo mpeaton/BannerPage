@@ -15,6 +15,7 @@ This is the source for the AMDG Technologies website.
 **Using AWS Amplify** (chosen to stay in AWS ecosystem for future apps/services).
 
 - GitHub repo: https://github.com/mpeaton/BannerPage (branch: master)
+- The repo is prepared (amplify.yml, site updates, docs committed).
 - Configuration: `amplify.yml`
 - Full deployment guide: `DEPLOYMENT.md` (includes exact Amplify steps for this repo, DNS notes for GoDaddy + Google Workspace email preservation)
 - Domain: amdgtechnologies.com (managed at GoDaddy for email compatibility)
