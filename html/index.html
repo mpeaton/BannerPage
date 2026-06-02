@@ -41,6 +41,34 @@
       background: linear-gradient(to bottom, rgba(10,12,16,0.12), rgba(10,12,16,0.38));
       z-index: -1;
     }
+    .sound-toggle {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      z-index: 10;
+      background: rgba(10, 12, 16, 0.55);
+      color: #e8e8e8;
+      border: 1px solid rgba(232, 232, 232, 0.25);
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 13px;
+      line-height: 1;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 28px;
+    }
+    .sound-toggle:hover {
+      background: rgba(10, 12, 16, 0.75);
+      border-color: rgba(232, 232, 232, 0.4);
+    }
+    .sound-toggle:active {
+      transform: scale(0.95);
+    }
     .section {
       max-width: 960px;
       margin: 0 auto;
@@ -104,6 +132,7 @@
   <!-- Hero / Featured Animation -->
   <header class="hero">
     <video 
+      id="hero-video"
       class="hero-video" 
       autoplay 
       loop 
@@ -113,6 +142,7 @@
       <source src="resources/amdg-animation-final.mp4" type="video/mp4">
     </video>
     <div class="hero-overlay"></div>
+    <button class="sound-toggle" aria-label="Toggle sound on the logo animation" title="Toggle sound">🔇</button>
   </header>
 
   <main>
@@ -173,13 +203,35 @@
   </footer>
 
   <script>
+    const video = document.getElementById('hero-video');
+    const soundToggle = document.querySelector('.sound-toggle');
+
     // Optional: pause video when tab is hidden to save resources
-    const video = document.querySelector('.hero-video');
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
         video.pause();
       } else {
         video.play().catch(() => {});
+      }
+    });
+
+    // Sound toggle for the animation (nice touch, but off by default for background video)
+    let isSoundOn = false;
+    soundToggle.addEventListener('click', () => {
+      isSoundOn = !isSoundOn;
+      video.muted = !isSoundOn;
+      if (isSoundOn) {
+        video.volume = 0.65; // comfortable level, not blasting
+      }
+      soundToggle.textContent = isSoundOn ? '🔊' : '🔇';
+      soundToggle.setAttribute('aria-label', isSoundOn ? 'Mute the logo animation sound' : 'Unmute the logo animation sound');
+    });
+
+    // Optional: allow keyboard activation
+    soundToggle.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        soundToggle.click();
       }
     });
   </script>
