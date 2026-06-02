@@ -56,4 +56,5 @@ app.yaml
 nginx/
 Dockerfile
 *.sql
-*.baknotes.md
+*.bak
+notes.md
