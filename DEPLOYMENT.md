@@ -367,9 +367,19 @@ The Amplify preview URL (the `*.amplifyapp.com` one) bypasses the custom domain 
    - This is the stage you're in — no action needed from you.
 
 3. Double-check the validation records (critical for SSL):
-   - In Amplify Domain management, note the exact verification CNAME records (they start with `_acme-challenge`).
+   - In Amplify Domain management, note the exact verification CNAME records (they start with `_acme-challenge` or a long hash like `_b1ae...`).
    - Check them at https://www.whatsmydns.net/ (select the record type CNAME). They must resolve to the target Amplify/CloudFront value from multiple locations.
    - The regular www/apex records are for traffic; these validation ones unlock the cert.
+
+   **Common GoDaddy gotcha that causes "still verifying ownership" for hours even after you "added" the records** (exactly the situation here):
+   - When adding the long validation CNAME in GoDaddy, the **Host** field must contain *only* the prefix up to (and including) the relevant subdomain, e.g. for a www domain: `_b1aec88806a78c3afae3d69f6cb3b937.www`
+   - **Do NOT paste the full name** that includes `.amdgtechnologies.com` into the Host field. If you do, GoDaddy creates the record at the wrong location (`...www.amdgtechnologies.com.amdgtechnologies.com` — the "double" name).
+   - The correct name Amplify expects will then return NXDOMAIN, so verification never completes.
+   - Fix: In GoDaddy DNS, delete the bad long validation record (the one whose Host contains the full domain), then re-add with Host exactly as shown in Amplify (stop before `.amdgtechnologies.com`).
+   - After saving in GoDaddy, wait 1-2 min and re-check on whatsmydns.net for the *exact* name Amplify wants. It must show the AWS target.
+   - Then return to the Amplify page — it should detect it and advance "Verifying domain ownership..." / Domain activation.
+
+   In your current zone file + live DNS: the www + www.www routing records are correct and live (pointing at the right cloudfront.net), but the validation record at the name Amplify is showing in the UI is NXDOMAIN (not present). The doubled-name version of the validation record *does* exist and points to the right place — clear sign the Host field was over-copied. Fix the Host and re-add as described.
 
 4. Once "Issued":
    - The custom domain should begin working within a few minutes (CloudFront propagates the cert association).
