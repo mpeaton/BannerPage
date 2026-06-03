@@ -132,14 +132,14 @@
     /* Responsive adjustments for the hero video animation */
     @media (orientation: portrait) {
       .hero {
-        /* With the mobile video source (square crop of the 2x2 blocks), we can keep hero fairly tall.
-           Reduce a bit from 100vh so the animation doesn't dominate too much on tall phones,
-           while ensuring the logo is fully visible and not cut off. */
+        /* Use a dedicated portrait source video (2x2 blocks on top, text underneath, 9:16 layout)
+           so the full logo composition is visible without cropping or truncation on vertical phones.
+           65vh keeps it prominent but not overwhelming the content below. */
         height: 65vh;
         height: 65dvh;
       }
       .hero-video {
-        /* Center the (already cropped-to-blocks) mobile video in portrait. */
+        /* Center the portrait video. */
         object-position: center center;
       }
     }
@@ -233,9 +233,11 @@
     const video = document.getElementById('hero-video');
     const soundToggle = document.querySelector('.sound-toggle');
 
-    // Sources for responsive video: full landscape for desktop/landscape, square crop of the 2x2 blocks for portrait mobile
+    // Sources for responsive video: full landscape (2x2 left + text right) for desktop/landscape,
+    // dedicated portrait version (2x2 on top, company name + slogan underneath) for mobile vertical.
+    // Both otherwise identical in style, colors, animations (red EKG, green electricity, etc.), 6s loop, audio.
     const desktopSrc = 'resources/amdg-animation-final.mp4';
-    const mobileSrc = 'resources/amdg-animation-final-mobile.mp4';
+    const mobileSrc = 'resources/amdg-animation-final-portrait.mp4';
 
     function setVideoSrc(isPortrait) {
       const newSrc = isPortrait ? mobileSrc : desktopSrc;

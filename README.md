@@ -8,7 +8,7 @@ This is the source for the AMDG Technologies website.
   - M: red with animated EKG trace (medical signal processing)
   - D: gold compass
   - G: green with PCB + green electricity animation following the traces
-- **Video**: `html/resources/amdg-animation-final.mp4` (with original audio track; sound toggle available on site) + poster `amdg-poster.png`
+- **Video**: `html/resources/amdg-animation-final.mp4` (landscape: 2x2 left + text right; with original audio track; sound toggle available on site) + `html/resources/amdg-animation-final-portrait.mp4` (portrait: 2x2 on top + text underneath) + poster `amdg-poster.png`
 - **Website**: Modern dark single-page site with the animation as full-bleed hero (including optional sound toggle). Live at https://www.amdgtechnologies.com/. See `html/index.html`.
 
 ## Hosting
