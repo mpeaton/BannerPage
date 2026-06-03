@@ -132,14 +132,14 @@
     /* Responsive adjustments for the hero video animation */
     @media (orientation: portrait) {
       .hero {
-        /* Use a dedicated portrait source video (2x2 blocks on top, text underneath, 9:16 layout)
-           so the full logo composition is visible without cropping or truncation on vertical phones.
-           65vh keeps it prominent but not overwhelming the content below. */
-        height: 65vh;
-        height: 65dvh;
+        /* Full viewport height for immersive hero. The portrait video (designed 9:16 with 2x2 on top, text below)
+           will be shown fully visible using contain (no cropping of blocks or text). Dark bars if any will match the theme. */
+        height: 100vh;
+        height: 100dvh;
       }
       .hero-video {
-        /* Center the portrait video. */
+        /* contain ensures the entire frame (full 2x2 with animations + text) is visible without being cut off on any side. */
+        object-fit: contain;
         object-position: center center;
       }
     }
