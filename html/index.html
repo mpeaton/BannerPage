@@ -131,12 +131,16 @@
 
     /* Responsive adjustments for the hero video animation */
     @media (orientation: portrait) {
+      .hero {
+        /* With the mobile video source (square crop of the 2x2 blocks), we can keep hero fairly tall.
+           Reduce a bit from 100vh so the animation doesn't dominate too much on tall phones,
+           while ensuring the logo is fully visible and not cut off. */
+        height: 65vh;
+        height: 65dvh;
+      }
       .hero-video {
-        /* Bias towards the left side of the video (where the 2x2 blocks are)
-           so the important visual mark remains visible in portrait mode.
-           The right side (text) will be cropped more, which is acceptable
-           on narrow screens. */
-        object-position: left center; /* Align left edge of video (2x2 blocks) to left of screen; crops right side (text) more in portrait */
+        /* Center the (already cropped-to-blocks) mobile video in portrait. */
+        object-position: center center;
       }
     }
 
@@ -228,6 +232,45 @@
   <script>
     const video = document.getElementById('hero-video');
     const soundToggle = document.querySelector('.sound-toggle');
+
+    // Sources for responsive video: full landscape for desktop/landscape, square crop of the 2x2 blocks for portrait mobile
+    const desktopSrc = 'resources/amdg-animation-final.mp4';
+    const mobileSrc = 'resources/amdg-animation-final-mobile.mp4';
+
+    function setVideoSrc(isPortrait) {
+      const newSrc = isPortrait ? mobileSrc : desktopSrc;
+      if (video.currentSrc && video.currentSrc.endsWith(newSrc.split('/').pop())) {
+        return; // already using the right source
+      }
+      const currentTime = video.currentTime || 0;
+      const wasPlaying = !video.paused;
+      video.src = newSrc;
+      video.load();
+      video.addEventListener('loadedmetadata', function onLoad() {
+        video.removeEventListener('loadedmetadata', onLoad);
+        video.currentTime = currentTime;
+        if (wasPlaying) {
+          video.play().catch(() => {});
+        }
+      }, { once: true });
+    }
+
+    function checkOrientation() {
+      // Use matchMedia or dimensions for reliability across devices
+      const isPortrait = window.matchMedia('(orientation: portrait)').matches || (window.innerHeight > window.innerWidth);
+      setVideoSrc(isPortrait);
+    }
+
+    // Initial check
+    checkOrientation();
+
+    // Listen for changes (works on rotate, and some resize cases)
+    window.addEventListener('orientationchange', checkOrientation);
+    window.addEventListener('resize', () => {
+      // Debounce a bit for resize events
+      clearTimeout(window._orientTimer);
+      window._orientTimer = setTimeout(checkOrientation, 100);
+    });
 
     // Optional: pause video when tab is hidden to save resources
     document.addEventListener('visibilitychange', () => {
