@@ -132,14 +132,14 @@
     /* Responsive adjustments for the hero video animation */
     @media (orientation: portrait) {
       .hero {
-        /* Full viewport height for immersive hero. The portrait video (designed 9:16 with 2x2 on top, text below)
-           will be shown fully visible using contain (no cropping of blocks or text). Dark bars if any will match the theme. */
-        height: 100vh;
-        height: 100dvh;
+        /* Set hero height to exactly match the portrait video aspect ratio (720:966 ≈ 0.745) for the full width.
+           This makes the video fill the width of the screen with no side bars and no cropping of the content.
+           The height will be ~134vw, which on portrait phones is a good portion of the screen (prominent but not full 100dvh). */
+        height: calc(100vw * 966 / 720);
       }
       .hero-video {
-        /* contain ensures the entire frame (full 2x2 with animations + text) is visible without being cut off on any side. */
-        object-fit: contain;
+        /* cover will now exactly fill the hero (which matches video aspect), showing full composition without crop or bars. */
+        object-fit: cover;
         object-position: center center;
       }
     }
