@@ -22,26 +22,35 @@
     }
     .hero {
       position: relative;
-      height: 100vh;
-      height: 100dvh; /* modern dynamic viewport for mobile (avoids address bar issues) */
+      overflow: hidden;
+      /* Size the hero box using the landscape video's exact aspect ratio (1280:720).
+         This guarantees that object-fit (contain or cover) will display the *entire* video
+         frame with no cropping of the 2x2 blocks or the text on the right.
+         max-height caps how large it can get on very wide windows (addresses "too large"
+         on half-screen of a 5K display). */
+      aspect-ratio: 1280 / 720;
+      max-height: 90vh;
+      max-height: 90dvh;
+      min-height: 420px;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
+      background-color: var(--bg);
     }
     .hero-video {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
       object-fit: cover;
       object-position: center center;
-      z-index: -1;
+      z-index: 1;
       filter: brightness(0.92);
     }
     .hero-overlay {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
       background: linear-gradient(to bottom, rgba(10,12,16,0.12), rgba(10,12,16,0.38));
-      z-index: -1;
+      z-index: 2;
     }
     .sound-toggle {
       position: absolute;
@@ -217,26 +226,22 @@
     /* Responsive adjustments for the hero video animation */
     @media (orientation: portrait) {
       .hero {
-        /* Set hero height to exactly match the portrait video aspect ratio (720:966 ≈ 0.745) for the full width.
-           This makes the video fill the width of the screen with no side bars and no cropping of the content.
-           The height will be ~134vw, which on portrait phones is a good portion of the screen (prominent but not full 100dvh). */
+        /* For the portrait-specific video, size the hero exactly to its aspect ratio
+           (using explicit height) so that cover shows 100% of its content with no
+           cropping and no letterboxing. */
+        aspect-ratio: 720 / 966;
         height: calc(100vw * 966 / 720);
+        max-height: none; /* portrait version intentionally uses its own proportion */
       }
       .hero-video {
-        /* cover will now exactly fill the hero (which matches video aspect), showing full composition without crop or bars. */
+        /* cover exactly fills because we sized the container to the video's aspect */
         object-fit: cover;
         object-position: center center;
       }
     }
 
     @media (max-width: 640px) {
-      /* On very small screens, we can optionally reduce hero height
-         slightly if 100vh feels too much, but keep immersive by default.
-         Uncomment if desired:
-      .hero {
-        height: 80vh;
-      }
-      */
+      /* Small screens rely on the portrait orientation rule above for sizing. */
     }
   </style>
 </head>
@@ -264,6 +269,9 @@
       muted 
       playsinline
       poster="resources/amdg-poster.png">
+      <!-- Desktop/landscape: 1280x720 (2x2 + text). The .hero uses aspect-ratio + max-height
+           so its box matches the video's aspect (until the max-height cap on ultra-wide).
+           cover then shows the complete frame with no cropping on normal windows. -->
       <source src="resources/amdg-animation-final.mp4" type="video/mp4">
     </video>
     <div class="hero-overlay"></div>
@@ -333,9 +341,11 @@
     const video = document.getElementById('hero-video');
     const soundToggle = document.querySelector('.sound-toggle');
 
-    // Sources for responsive video: full landscape (2x2 left + text right) for desktop/landscape,
-    // dedicated portrait version (2x2 on top, company name + slogan underneath) for mobile vertical.
-    // Both otherwise identical in style, colors, animations (red EKG, green electricity, etc.), 6s loop, audio.
+    // Sources for responsive video:
+    // - desktop/landscape: 1280x720 (2x2 left + text right). CSS sizes .hero via aspect-ratio
+    //   (capped at 90dvh) so cover displays the full composition without cropping.
+    // - portrait: 720x966 (2x2 on top + text below, framed for full visibility).
+    // Both 6s loops with audio; sound off by default.
     const desktopSrc = 'resources/amdg-animation-final.mp4';
     const mobileSrc = 'resources/amdg-animation-final-portrait.mp4';
 
